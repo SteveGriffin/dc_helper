@@ -1,5 +1,9 @@
 require "dc_helper/version"
 
 module DcHelper
-  # Your code goes here...
+
+  def self.test
+  	puts "Initial test"
+  end
+
 end

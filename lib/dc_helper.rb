@@ -79,4 +79,30 @@ module DcHelper
     end
   end
 
+
+  #function to change station id.  takes the station's mac address and the new name as parameters
+  def self.change_id(mac, new_name)
+    command ='<sci_request version="1.0">
+		  <send_message>
+		    <targets>
+		      <device id="all"/>
+		    </targets>
+		    <rci_request version="1.1">
+		      <do_command target="zigbee">
+		        <set_setting addr="'<< mac <<'!">
+		      <radio>
+		      <node_id>' << new_name << '</node_id>
+		      </radio>
+			</set_setting>
+		      </do_command>
+		    </rci_request>
+		  </send_message>
+		</sci_request>'
+
+    #make request and get returned values
+    result = request(@@sci_url, command, "post")
+
+    #return confirmation message
+    return "station name change submitted"
+  end
 end

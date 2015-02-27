@@ -105,4 +105,52 @@ module DcHelper
     #return confirmation message
     return "station name change submitted"
   end
+
+
+    #returns a hash of station names (key) and their mac addresses(value)
+  def self.find_all_nodes(clear = false)
+    if clear
+      #make request and get results
+      result = request(@@xbee_core_url,"&clear=true","get")
+    else
+      #make request and get results
+      result = request(@@xbee_core_url,'',"get")
+    end
+
+    #load with nokogiri and prepare to parse through the xbee nodes
+    xml = Nokogiri::XML(result)
+    xbees = xml.xpath("//XbeeCore")
+
+    #hash that will be returned with station names and their ids
+    node_results = Hash.new(0)
+    #check each node
+    #if node is a gateway, don't include in results
+    xbees.each do |xbee|
+      #get the values from the xml elements
+      mac = xbee.search 'xpExtAddr'
+      mac = mac.inner_text
+      name = xbee.search 'xpNodeId'
+      name = name.inner_text
+      device_type = xbee.search 'xpDeviceType'
+      device_type = device_type.inner_text
+
+      #check if node is a gateway
+      if device_type == "327683" || device_type == "720899"
+        #don't include the gateway, but add gateway to database if it doesn't already exist
+        #binding.pry
+        gateway_id = xbee.search 'devConnectwareId'
+        gateway_id = gateway_id.inner_text
+        add_gateway(name, gateway_id)
+      else
+        #add name and mac to hash
+        node_results[name] = mac
+      end
+    end
+    #return nodes
+    node_results
+  end
+
+
+
+  
 end

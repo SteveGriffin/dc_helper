@@ -2,8 +2,16 @@ require "dc_helper/version"
 
 module DcHelper
 
+  @user_name = ""
+  @password = ""
+
   def self.test
     puts "Initial test"
+  end
+
+  def initialize(name, password)
+    @user_name = name
+    @password = password
   end
 
   #request to device cloud.  takes url, xml formatted request, user name, and password as parameters

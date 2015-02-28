@@ -1,6 +1,6 @@
 # DcHelper
 
-TODO: Write a gem description
+DcHelper is a Ruby gem designed to easily perform common tasks when working with Digi's Device Cloud API service.  It facilitates messaging through the Device Cloud, as well as status checking to check the immediate availability and status of nodes within your cloud network.
 
 ## Installation
 
@@ -20,12 +20,5 @@ Or install it yourself as:
 
 ## Usage
 
-TODO: Write usage instructions here
+Documentation coming soon..
 
-## Contributing
-
-1. Fork it ( https://github.com/[my-github-username]/dc_helper/fork )
-2. Create your feature branch (`git checkout -b my-new-feature`)
-3. Commit your changes (`git commit -am 'Add some feature'`)
-4. Push to the branch (`git push origin my-new-feature`)
-5. Create a new Pull Request

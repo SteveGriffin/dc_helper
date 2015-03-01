@@ -12,6 +12,8 @@ module DcHelper
   def initialize(name, password)
     @user_name = name
     @password = password
+    @xbee_core_url = ""
+    @sci_url = ""
   end
 
   #request to device cloud.  takes url, xml formatted request, user name, and password as parameters
@@ -73,7 +75,7 @@ module DcHelper
       </sci_request>'
 
     #make request and get returned values
-    result = request(@@sci_url, command, "post")
+    result = request(@sci_url, command, "post")
 
     #downcase for easy comparison
     result = result.downcase
@@ -108,7 +110,7 @@ module DcHelper
 		</sci_request>'
 
     #make request and get returned values
-    result = request(@@sci_url, command, "post")
+    result = request(@sci_url, command, "post")
 
     #return confirmation message
     return "station name change submitted"
@@ -119,10 +121,10 @@ module DcHelper
   def self.find_all_nodes(clear = false)
     if clear
       #make request and get results
-      result = request(@@xbee_core_url,"&clear=true","get")
+      result = request(@xbee_core_url,"&clear=true","get")
     else
       #make request and get results
-      result = request(@@xbee_core_url,'',"get")
+      result = request(@xbee_core_url,'',"get")
     end
 
     #load with nokogiri and prepare to parse through the xbee nodes

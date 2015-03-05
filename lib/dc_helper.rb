@@ -2,20 +2,6 @@ require "dc_helper/version"
 
 module DcHelper
 
-  @user_name = ""
-  @password = ""
-
-  def self.test
-    puts "Initial test"
-  end
-
-  def initialize(name, password)
-    @user_name = name
-    @password = password
-    @xbee_core_url = ""
-    @sci_url = ""
-  end
-
   #request to device cloud.  takes url, xml formatted request, user name, and password as parameters
   #as well as http type, which is either "get" or "post"
   #sci requests use get, xbee requests use get
@@ -48,9 +34,7 @@ module DcHelper
     # Print an Error if the response was not completely successful.
     case res
     when Net::HTTPSuccess, Net::HTTPRedirection
-      #Ok
     else
-      #"res.error!"
       "Communication failed."
     end
 
@@ -174,24 +158,22 @@ module DcHelper
     opts.each {|k,v| @config[k.to_sym] = v if @valid_config_keys.include? k.to_sym}
   end
 
-  # Configure through yaml file
-  def self.configure_with(path_to_yaml_file)
-    begin
-      config = YAML::load(IO.read(path_to_yaml_file))
-    rescue Errno::ENOENT
-      log(:warning, "YAML configuration file not found. Using defaults."); return
-    rescue Psych::SyntaxError
-      log(:warning, "YAML configuration file contains invalid syntax. Using defaults."); return
-    end
+  # # Configure through yaml file
+  # def self.configure_with(path_to_yaml_file)
+  #   begin
+  #     config = YAML::load(IO.read(path_to_yaml_file))
+  #   rescue Errno::ENOENT
+  #     log(:warning, "YAML configuration file not found. Using defaults."); return
+  #   rescue Psych::SyntaxError
+  #     log(:warning, "YAML configuration file contains invalid syntax. Using defaults."); return
+  #   end
 
-    configure(config)
-  end
+  #   configure(config)
+  # end
 
   def self.config
     @config
   end
   # END config settings segment ****************
-
-
 
 end

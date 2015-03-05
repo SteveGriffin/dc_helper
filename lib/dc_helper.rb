@@ -93,21 +93,21 @@ module DcHelper
   #function to change station id.  takes the station's mac address and the new name as parameters
   def self.change_id(mac, new_name)
     command ='<sci_request version="1.0">
-		  <send_message>
-		    <targets>
-		      <device id="all"/>
-		    </targets>
-		    <rci_request version="1.1">
-		      <do_command target="zigbee">
-		        <set_setting addr="'<< mac <<'!">
-		      <radio>
-		      <node_id>' << new_name << '</node_id>
-		      </radio>
-			</set_setting>
-		      </do_command>
-		    </rci_request>
-		  </send_message>
-		</sci_request>'
+      <send_message>
+        <targets>
+          <device id="all"/>
+        </targets>
+        <rci_request version="1.1">
+          <do_command target="zigbee">
+            <set_setting addr="'<< mac <<'!">
+          <radio>
+          <node_id>' << new_name << '</node_id>
+          </radio>
+      </set_setting>
+          </do_command>
+        </rci_request>
+      </send_message>
+    </sci_request>'
 
     #make request and get returned values
     result = request(@sci_url, command, "post")
@@ -117,7 +117,7 @@ module DcHelper
   end
 
 
-    #returns a hash of station names (key) and their mac addresses(value)
+  #returns a hash of station names (key) and their mac addresses(value)
   def self.find_all_nodes(clear = false)
     if clear
       #make request and get results
@@ -160,7 +160,38 @@ module DcHelper
     node_results
   end
 
+  #config settings segment ****************
+  # Configuration defaults
+  @config = {
+    :login => "temp",
+    :password => "temp",
+  }
+
+  @valid_config_keys = @config.keys
+
+  # Configure through hash
+  def self.configure(opts = {})
+    opts.each {|k,v| @config[k.to_sym] = v if @valid_config_keys.include? k.to_sym}
+  end
+
+  # Configure through yaml file
+  def self.configure_with(path_to_yaml_file)
+    begin
+      config = YAML::load(IO.read(path_to_yaml_file))
+    rescue Errno::ENOENT
+      log(:warning, "YAML configuration file not found. Using defaults."); return
+    rescue Psych::SyntaxError
+      log(:warning, "YAML configuration file contains invalid syntax. Using defaults."); return
+    end
+
+    configure(config)
+  end
+
+  def self.config
+    @config
+  end
+  # END config settings segment ****************
 
 
-  
+
 end

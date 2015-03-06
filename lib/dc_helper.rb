@@ -41,7 +41,6 @@ module DcHelper
     #return request result
     return res.body
   end
-
   #check if device responds to an xbee NI command
   #returns boolean based on whether a proper response was received
   def self.device_online?(mac)
@@ -147,8 +146,12 @@ module DcHelper
   #config settings segment ****************
   # Configuration defaults
   @config = {
+  	#Device Cloud credentials
     :login => "temp",
     :password => "temp",
+    #Device Cloud urls
+    :sci_url => "",
+    :xbee_core_url => ""
   }
 
   @valid_config_keys = @config.keys
@@ -156,6 +159,11 @@ module DcHelper
   # Configure through hash
   def self.configure(opts = {})
     opts.each {|k,v| @config[k.to_sym] = v if @valid_config_keys.include? k.to_sym}
+
+    puts "Device Cloud account information configured"
+    puts "user name: " << @config.login
+    puts "password: " << @config.password
+
   end
 
   # # Configure through yaml file
@@ -177,3 +185,4 @@ module DcHelper
   # END config settings segment ****************
 
 end
+

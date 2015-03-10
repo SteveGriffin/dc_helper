@@ -146,12 +146,12 @@ module DcHelper
   #config settings segment ****************
   # Configuration defaults
   @config = {
-  	#Device Cloud credentials
+    #Device Cloud credentials
     :login => "temp",
     :password => "temp",
     #Device Cloud urls
-    :sci_url => "",
-    :xbee_core_url => ""
+    :sci_url => 'http://login.etherios.com/ws/sci',
+    :xbee_core_url => 'http://login.etherios.com/ws/XbeeCore'
   }
 
   @valid_config_keys = @config.keys
@@ -166,6 +166,8 @@ module DcHelper
 
   end
 
+  #IMPLEMENT YAML AT LATER DATE***
+
   # # Configure through yaml file
   # def self.configure_with(path_to_yaml_file)
   #   begin
@@ -178,11 +180,28 @@ module DcHelper
 
   #   configure(config)
   # end
+  #***********************************
 
   def self.config
     @config
   end
   # END config settings segment ****************
 
-end
 
+  #test functionality of different features
+  def self.test
+    #single address
+    single_mac = '00:00:00:00:00:00:00:00'
+    #mac collection
+    macs = ['00:00:00:00:00:00:00:00','00:00:00:00:00:00:00:00']
+
+    #configure
+    configure(login: '', password: '')
+
+    #test find all node functionaltiy
+    puts DcHelper.find_all_nodes
+  end
+
+
+
+end
